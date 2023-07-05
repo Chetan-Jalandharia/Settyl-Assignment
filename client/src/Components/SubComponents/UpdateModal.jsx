@@ -4,12 +4,13 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-function UpdateModal({ show, data, setShow ,setUpdate}) {
+function UpdateModal({ show, data, setShow, setUpdate }) {
   const [Task, setTask] = useState({
     id: data?._id,
     title: data?.title,
     description: data?.description,
     dueDate: data?.dueDate,
+    currentStatus: data?.currentStatus,
   });
 
   const handleInput = (e) => {
@@ -64,6 +65,18 @@ function UpdateModal({ show, data, setShow ,setUpdate}) {
                 onChange={handleInput}
                 rows={3}
               />
+            </Form.Group>
+            <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
+              <Form.Label>Select Current Status</Form.Label>
+              <Form.Select
+                aria-label="Select User"
+                name="currentStatus"
+                onChange={handleInput}
+              >
+                <option value={"Assigned"}>Assigned</option>
+                <option value={"In-Progress"}>In-Progress</option>
+                <option value={"Completed"}>Completed</option>
+              </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
               <Form.Label>Task Due Date</Form.Label>

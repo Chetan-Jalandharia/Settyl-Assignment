@@ -5,7 +5,7 @@ router.post("/add", CreateTask)
 router.post("/update", UpdateTask)
 router.post("/remove/:id", DelelteTask)
 router.get("/showAssigned/:id", ShowAllAssigned)
-router.post("/showAll", ShowAllTask)
+router.get("/showAll", ShowAllTask)
 router.post("/show", ShowOneTask)
 
 

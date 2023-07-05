@@ -15,7 +15,7 @@ exports.Register = async (req, res) => {
 
 
     try {
-      
+
         if (!(isName.test(name)) || !(isEmail.test(email))) {
             res.status(400).json({
                 success: false,
@@ -82,7 +82,55 @@ exports.Login = (req, res) => {
                     })
                 }
                 let token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: 60 * 60 * 24 * 30 });
-                val.isOnline = true
+
+                val.loginLogs.push(logger)
+                val.save()
+                    .then(data => {
+                        res.status(200).json({
+                            success: true,
+                            status: 200,
+                            message: "Login success",
+                            token,
+                            data
+                        })
+                    })
+
+            })
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            message: "Error Occurs: " + error
+        })
+    }
+
+}
+exports.AdminLogin = (req, res) => {
+
+    const { email, password } = req.body
+    try {
+        User.findOne({ email: email })
+            .then(val => {
+                let logger = {
+                    ip: req.ip,
+                    isLoged: false
+                }
+                if (!val) {
+                    res.status(403).json({
+                        success: false,
+                        status: 404,
+                        message: "User not Exists"
+                    })
+                }
+                if (!(bcrypt.compareSync(password, val.password))) {
+                    res.status(401).json({
+                        success: false,
+                        status: 401,
+                        message: "Invalid Credentials"
+                    })
+                }
+                let token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: 60 * 60 * 24 * 30 });
+
                 val.loginLogs.push(logger)
                 val.save()
                     .then(data => {

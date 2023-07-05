@@ -4,6 +4,7 @@ const router = require('express').Router()
 
 router.post("/register",  Register)
 router.post("/login", Login)
+router.post("/adminlogin", Login)
 // router.post("/logout", Logout)
 
 router.get("/show", ShowUsers)

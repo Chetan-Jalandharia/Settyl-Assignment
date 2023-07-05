@@ -11,6 +11,9 @@ import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import PrivateRoutes from "./Pages/PrivateRoutes";
 import ListTasks from "./Components/ListTasks";
+import AdminRoot from "./Pages/AdminRoot";
+import Dashboard from "./Pages/Dashboard";
+import AdminLogin from "./Pages/AdminLogin";
 
 function App() {
   const router = createBrowserRouter(
@@ -23,9 +26,9 @@ function App() {
           path="/allTask"
           element={<PrivateRoutes Component={ListTasks} />}
         />
-        <Route path="/admin" >
-          <Route index element={<Login />} />
-          <Route path="login" element={<Login />} />
+        <Route path="/admin" element={<AdminRoot />}>
+          <Route index element={<Dashboard />} />
+          <Route path="login" element={<AdminLogin />} />
         </Route>
       </Route>
     )

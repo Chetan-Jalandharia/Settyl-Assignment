@@ -3,7 +3,6 @@ import { Col, Row } from "react-bootstrap";
 import Card from "./SubComponents/Card";
 
 import { useState } from "react";
-import UpdateModal from "./SubComponents/UpdateModal";
 import axios from "axios";
 const ListTasks = () => {
 

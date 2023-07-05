@@ -6,7 +6,7 @@ const app = express()
 
 // database initializaion
 const db = require('./Config/db')
-
+require('./Config/seed')
 
 
 //middelware initialization
@@ -24,7 +24,7 @@ const TaskRoute = require('./Routes/TaskRoutes')
 app.use("/api/user", userRoute)
 app.use("/api/task", TaskRoute)
 
-  
+
 
 
 app.get("/", (req, res) => {

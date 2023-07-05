@@ -42,6 +42,7 @@ function Cards({ data,  setUpdate }) {
           <Card.Title className="fw-bold">{data.title}</Card.Title>
           <Card.Text>{data.description}</Card.Text>
           <Card.Text>Due Date : {data?.dueDate.slice(0, 10)}</Card.Text>
+          <Card.Text>Task Status : {data?.currentStatus}</Card.Text>
           <Card.Text>Assigned By : {data?.assignedBy?.name}</Card.Text>
           <div className="position-absolute bottom-0 my-3 ">
             <Button onClick={() => handleShow(data)}>Update</Button>

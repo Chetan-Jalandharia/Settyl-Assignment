@@ -2,7 +2,7 @@ const Task = require("./TaskModel");
 
 
 exports.CreateTask = (req, res) => {
-    const { title, description, dueDate, assignedTo,assignedBy } = req.body;
+    const { title, description, dueDate, assignedTo, assignedBy } = req.body;
     // console.log(dueDate);
     const newTask = new Task()
     newTask.title = title
@@ -94,7 +94,8 @@ exports.DelelteTask = (req, res) => {
 
 exports.ShowAllTask = (req, res) => {
 
-    Task.find({status:true})
+    Task.find({ status: true })
+    .populate('assignedBy')
         .then(data => {
 
             res.status(200).json({
@@ -114,8 +115,8 @@ exports.ShowAllTask = (req, res) => {
 
 exports.ShowAllAssigned = (req, res) => {
     // console.log(req.params.id);
-    Task.find({ assignedTo: req.params.id,status:true })
-    .populate("assignedBy")
+    Task.find({ assignedTo: req.params.id, status: true })
+        .populate("assignedBy")
         .then(data => {
 
             res.status(200).json({
