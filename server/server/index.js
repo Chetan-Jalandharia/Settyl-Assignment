@@ -8,23 +8,17 @@ const app = express()
 const db = require('./Config/db')
 require('./Config/seed')
 
-
 //middelware initialization
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-
-
 const userRoute = require('./Routes/UserRoutes')
 const TaskRoute = require('./Routes/TaskRoutes')
 
-
 app.use("/api/user", userRoute)
 app.use("/api/task", TaskRoute)
-
-
 
 
 app.get("/", (req, res) => {
