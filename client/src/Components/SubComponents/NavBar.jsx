@@ -7,12 +7,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 function NavBar() {
   const navigate = useNavigate();
   let auth = sessionStorage.getItem("auth");
+  let adminAuth = sessionStorage.getItem("adminAuth");
 
   return (
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="/">
+          <Navbar.Brand onClick={() => navigate(adminAuth ? "/admin" : "/")}>
             <img
               alt=""
               src="/vite.svg"
@@ -21,17 +22,17 @@ function NavBar() {
               className="d-inline-block align-top"
             />
             {"  "}
-            <b>Note mi</b>
+            <b>Task Bit</b>
           </Navbar.Brand>
           <Nav className="ms-auto me-2">
             <NavLink
-              to={"/"}
+              to={adminAuth ? "/admin" : "/"}
               className={"text-decoration-none text-light mx-2"}
             >
               Home
             </NavLink>
             <NavLink
-              to={"/allTask"}
+              to={adminAuth ? "/admin" : "/allTask"}
               className={"text-decoration-none text-light mx-2"}
             >
               Tasks

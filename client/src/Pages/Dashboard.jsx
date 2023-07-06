@@ -10,7 +10,9 @@ const Dashboard = () => {
   const svgRef = useRef();
   const [Update, setUpdate] = useState(0);
   const [data, setdata] = useState([]);
+  const [Info, setInfo] = useState([]);
   const [ChartData, setChartData] = useState([]);
+  const [SearchData, setSearchData] = useState("");
 
   useEffect(() => {
     let auth = sessionStorage.getItem("adminAuth");
@@ -26,19 +28,20 @@ const Dashboard = () => {
         .get(`http://localhost:5001/api/task/showAll`)
         .then((val) => {
           setdata(val.data.data);
+          setInfo(val.data.data);
         })
         .catch((err) => {
           console.log(err);
           alert("server error");
         });
-  }, []);
+  }, [SearchData, Update]);
 
   useEffect(() => {
     let Assigned = 0;
     let InProgress = 0;
     let Completed = 0;
 
-    data?.forEach((val, index) => {
+    Info?.forEach((val, index) => {
       //   console.log(val);
       if (val.currentStatus === "Completed") {
         Completed++;
@@ -55,7 +58,7 @@ const Dashboard = () => {
       { property: "Completed", value: Completed },
     ]);
     // console.log(ChartData);
-  }, [data]);
+  }, [Info]);
 
   useEffect(() => {
     const w = 400;
@@ -80,8 +83,10 @@ const Dashboard = () => {
       .data(formatedData)
       .join("path")
       .attr("d", arcGenerator)
+      .attr("stroke", "white")
+      .attr("stroke-width", 2)
       .attr("fill", (d) => color(d.value))
-      .style("opacity", 0.7);
+      .style("border", "black 5px");
 
     svg
       .selectAll()
@@ -136,27 +141,67 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="text-center py-5">
+      {/* <div className="text-center py-5">
         <svg ref={svgRef}></svg>
-      </div>
+      </div> */}
+      <Container className="text-center py-5">
+        <Row>
+          <Col lg={8} md={7} sm={12} xs={12}>
+            <svg ref={svgRef}></svg>
+          </Col>
+          <Col
+            lg={4}
+            md={5}
+            sm={12}
+            xs={12}
+            className="d-flex flex-column justify-content-center pt-2"
+          >
+            {ChartData.map((val, index) => {
+              return (
+                <div key={index} className="my-2">
+                  <b>{val.property} </b>: {val.value}
+                </div>
+              );
+            })}
+          </Col>
+        </Row>
+      </Container>
       <hr />
       <Container fluid>
         <div className="d-flex justify-content-between mt-2 mb-4 mx-3">
-          <h2 className="d-inline-block">All Tasks</h2>
-          <div className="d-inline w-25">
+          <h2 className="">All Tasks</h2>
+          <div className="">
             <Button onClick={sortByIncDate} className="m-1">
               Sort Min Due Date
             </Button>
             <Button onClick={sortByDecDate} className="m-1">
               Sort Max Due Date
             </Button>
+
             <InputGroup className="">
               <Form.Control
                 placeholder="Search Task"
                 aria-label="Search"
+                name="search"
                 aria-describedby="basic-addon2"
+                value={SearchData}
+                onChange={(e) => {
+                  setSearchData(e.target.value);
+                }}
               />
-              <Button variant="outline-primary" id="button-addon2">
+              <Button
+                variant="outline-primary"
+                id="button-addon2"
+                onClick={() => {
+                  const x = data.filter((val) => {
+                    if (val.title.includes(SearchData)) {
+                      return val;
+                    }
+                  });
+                  console.log(x);
+                  setdata(x);
+                }}
+              >
                 Search
               </Button>
             </InputGroup>
@@ -166,7 +211,7 @@ const Dashboard = () => {
           {
             <Row className="gx-0 ">
               {data?.map((val, key) => {
-                console.log(val);
+                // console.log(val);
                 return (
                   <Col lg={3} md={4} sm={6} xs={12} key={key}>
                     <Cards
